@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://kit.fontawesome.com/dba8f907ff.js" crossorigin="anonymous"></script>
+    <title>Music Player</title>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="circle">
+                <i class="fa-solid fa-angle-left"></i>
+            </div>
+            <div class="circle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </nav>
+
+        <div class="picture">
+            <img src="images/music.png" alt="" class="music">
+        </div>
+
+        <div class="music-details">
+            <p class="music-name">SKECHERS</p>
+            <p>DripReport</p>
+        </div>
+
+        <audio id="song">
+            <source src="song.mp3" type="audio/mpeg">
+        </audio>
+
+        <input type="range" value="0" id="progess">
+
+        <div class="control">
+            <div onclick="backwardClick();"><i class="fa-solid fa-backward" id="backward"></i></div>
+            <div onclick="playPause();"><i class="fa-solid fa-play" id="control"></i></div>
+            <div onclick="forwardClick();" ><i class="fa-solid fa-forward" id="forward"></i></div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script>
+
+        let song = document.getElementById('song');
+        let control = document.getElementById('control');
+        let progess = document.getElementById('progess');
+        let forward = document.getElementById('forward');
+        let backward = document.getElementById('backward');
+
+        song.onloadeddata = () => {
+            progess.max = song.duration;
+            progess.value = song.currentTime;
+        }
+        
+        let playPause = () => {
+            if (control.classList.contains('fa-play')){
+                song.play();
+                control.classList.remove('fa-play');
+                control.classList.add('fa-pause');
+            }else{
+                song.pause();
+                control.classList.remove('fa-pause');
+                control.classList.add('fa-play');
+            }
+        }
+
+        if (song.play()){
+            setInterval( () => {
+                progess.value = song.currentTime;
+            },500);
+        };
+
+        song.addEventListener('ended', function() {
+            control.classList.remove('fa-pause');
+            control.classList.add('fa-play');
+        });
+
+        progess.onchange = () => {
+            song.play;
+            song.currentTime = progess.value;
+        }
+
+        let forwardClick = () => {
+            if (Number(progess.value) + 10 <= song.duration){
+                progess.value = Number(progess.value) + 10;
+                song.currentTime = song.currentTime + 10;
+            }else{
+                progess.value = song.duration;
+                song.currentTime = song.duration;
+            };
+        }
+
+        let backwardClick = () => {
+            if (progess.value - 10 >= 0){
+                progess.value = Number(progess.value) - 10;
+                song.currentTime = song.currentTime - 10;
+            }else{
+                progess.value = 0;
+                song.currentTime = 0;
+            };
+        }
+
+    </script>
+</body>
+</html>
